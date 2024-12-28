@@ -43,7 +43,7 @@ User.init(
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: { msg: "El correo electrónico ingresado ya está en uso" },
+        unique: { msg: "The email address entered is already in use." },
         validate: {
           notEmpty: { msg: "The email cannot be an empty field" },
           isEmail: { msg: "The entered email is not valid" }

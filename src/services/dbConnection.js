@@ -11,7 +11,7 @@ export const dbConnect = async() =>{
        setupAssociation()
        await dbConfig.sync({ alter:true })
 
-        console.log('Se logró la conección a Postgres a través de Sequelize 😺')
+        console.log('Se logró la conexión a Postgres a través de Sequelize 😺')
     } catch (error) {
         console.error('No pudimos conectarnos a la DB 🙀', error);
         process.exit(1)

@@ -7,7 +7,6 @@ export const createUser = async (req, res) => {
 
         const user = await User.create(req.body)
 
-        console.log(user)
         res.status(201).json({
             message: 'Usuario creado con éxito',
             status: 201,
@@ -23,51 +22,6 @@ export const createUser = async (req, res) => {
 
     }
 }
-/*
-export const getUserById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const user = await User.findByPk(id)
-
-
-        res.status(200).json({
-            message: "Producto encontrado con éxito",
-            status: 200,
-            data: user,
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: "Error al buscar el usuario",
-            status: 500,
-            data: null,
-        });
-    }
-};
-*/
-/*
-export const findAll = async (req, res) => {
-    try {
-        const users = await User.findAll()
-
-
-
-        res.status(200).json({
-            message: "Usuarios encontrados con éxito",
-            status: 200,
-            data: users,
-        });
-    } catch (error) {
-
-        console.error(error);
-        res.status(500).json({
-            message: "Error al obtener los usuarios",
-            status: 500,
-            data: null,
-        });
-    }
-};
-*/
 
 
 export const findUserById = async (req, res) => {
@@ -75,7 +29,7 @@ export const findUserById = async (req, res) => {
       const { id } = req.params;  // Obtén el ID del usuario desde los parámetros de la URL
   
       const user = await User.findByPk(id, {
-        attributes: ['id', 'firstName', 'lastName', 'email'],  // Seleccionamos los campos de usuario que necesitamos
+        attributes: ['id', 'firstName', 'lastName'],  // Seleccionamos los campos de usuario que necesitamos
         include: {
           model: Bootcamp,  // Incluir los bootcamps asociados
           as: 'bootcamps',  // El alias que hemos definido en las asociaciones
@@ -86,7 +40,6 @@ export const findUserById = async (req, res) => {
         }
       });
   
-      // Si no se encuentra el usuario, devolver un error
       if (!user) {
         return res.status(404).json({
           message: 'Usuario no encontrado',
@@ -95,9 +48,9 @@ export const findUserById = async (req, res) => {
         });
       }
   
-      // Responder con el usuario y sus bootcamps
+      
       res.status(200).json({
-        message: 'Usuario obtenido con éxito',
+        message: 'Usuario y bootcamps obtenidos con éxito',
         status: 200,
         data: user,  // Esto contiene el usuario con sus bootcamps
       });
@@ -105,7 +58,7 @@ export const findUserById = async (req, res) => {
     } catch (error) {
       console.error(error);
       res.status(500).json({
-        message: 'Error al obtener el usuario',
+        message: 'Error al obtener el usuario y sus bootcamps',
         status: 500,
         data: null,
       });
@@ -138,7 +91,6 @@ export const findAll = async (req, res) => {
         });
       }
   
-      // Responder con la lista de usuarios y sus bootcamps
       res.status(200).json({
         message: 'Usuarios obtenidos con éxito',
         status: 200,
@@ -154,6 +106,7 @@ export const findAll = async (req, res) => {
       });
     }
   };
+
 
 export const updateUser = async (req, res) => {
     try {
@@ -179,6 +132,7 @@ export const updateUser = async (req, res) => {
         });
     }
 }
+
 
 export const deleteUserById = async (req, res) => {
     try {

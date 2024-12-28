@@ -30,7 +30,7 @@ export const initBootcamp = (dbConfig) => {
 
                 cue: {
                     type: DataTypes.INTEGER,
-                    allowNull: false, // Campo obligatorio
+                    allowNull: false,
                     validate: {
                         notEmpty: { msg: "The CUE cannot be an empty field." },
                         isInt: { msg: "The CUE must be a valid integer." },
@@ -47,7 +47,7 @@ export const initBootcamp = (dbConfig) => {
                 },
                 description: {
                     type: DataTypes.TEXT,
-                    allowNull: false, // Campo obligatorio
+                    allowNull: false, 
                     validate: {
                         notEmpty: { msg: "The description cannot be an empty field." },
                         len: {
