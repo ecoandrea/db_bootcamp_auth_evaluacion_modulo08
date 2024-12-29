@@ -119,7 +119,7 @@ export const updateUser = async (req, res) => {
 
 
         res.status(200).json({
-            message: "Producto actualizado con éxito",
+            message: "Usuario actualizado con éxito",
             status: 200,
             data: user,
         });

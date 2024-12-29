@@ -10,7 +10,9 @@ export const setupUserBootcamp = () => {
         through: 'UserBootcamp',
         foreignKey: 'userId',
         otherKey: 'bootcampId', 
-        as: 'bootcamps'
+        as: 'bootcamps',
+        
+        
     })
 
     Bootcamp.belongsToMany(User, {

@@ -14,7 +14,7 @@ export const initBootcamp = (dbConfig) => {
             },
             title: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
             validate:{
                 notEmpty: {msg: "The title cannot be an empty field."},
                 len: {

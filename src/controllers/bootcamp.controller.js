@@ -4,13 +4,12 @@ import { User } from "../models/User.model.js";
 export const createBootcamp = async(req, res) =>{
     try {
 
-        const user = await Bootcamp.create(req.body)
+        const bootcamp = await Bootcamp.create(req.body)
         
-        console.log(user)
         res.status(201).json({
             message: 'Bootcamp creado con éxito',
             status: 201,
-            data: user
+            data: bootcamp
         })
     } catch (error) {
         console.error(error);
@@ -82,7 +81,7 @@ export const findById = async (req, res) => {
   };
 
 
-
+//busca los bootcamp y sus users 
 export const findAll = async (req, res) => {
   try {
     const bootcamps = await Bootcamp.findAll({
@@ -100,7 +99,7 @@ export const findAll = async (req, res) => {
 
     if (bootcamps.length === 0) {
       return res.status(404).json({
-        message: 'No hay usuarios encontrados',
+        message: 'No se ha encotrado los datos',
         status: 404,
         data: null,
       });
