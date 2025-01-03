@@ -46,8 +46,13 @@ User.init(
         unique: { msg: "The email address entered is already in use." },
         validate: {
           notEmpty: { msg: "The email cannot be an empty field" },
-          isEmail: { msg: "The entered email is not valid" }
+          isEmail: { msg: "The entered email is not valid" },
+          is: {
+               args: /^[a-zA-Z0-9._%+-áéíóúÁÉÍÓÚñÑ]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+               msg: "The email format is not valid.",
+          }
         },
+        
       },
 
     },
