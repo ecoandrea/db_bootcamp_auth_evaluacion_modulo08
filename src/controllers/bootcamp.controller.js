@@ -18,20 +18,20 @@ export const createBootcamp = async (req, res, next) => {
 
 export const addUser = async (req, res, next) => {
   try {
-    const { bootcampId, userId } = req.body; // Se reciben los IDs de bootcamp y usuario
+    const { bootcampId, userId } = req.body; 
     const bootcamp = await Bootcamp.findByPk(bootcampId, {
       attributes: ["id", "title"],
-    }); // Buscar el bootcamp por su ID
+    }); 
     const user = await User.findByPk(userId, {
       attributes: ["id", "firstName", "lastName"],
-    }); // Buscar el usuario por su ID
+    }); 
 
     if (!bootcamp || !user) {
       throw new NotFoundError("Bootcamp o Usuario no encontrado");
     }
 
     // Asociar el usuario al bootcamp
-    await bootcamp.addUser(user); // Utilizando la asociación definida anteriormente
+    await bootcamp.addUser(user);
 
     res.status(200).json({
       message: "Usuario agregado al Bootcamp con éxito",
@@ -58,20 +58,20 @@ export const findById = async (req, res, next) => {
   }
 };
 
-//busca los bootcamp y sus users
+
 export const findAll = async (req, res, next) => {
   try {
     const bootcamps = await Bootcamp.findAll({
-      attributes: ["id", "title"], // Seleccionamos los campos  que necesitamos
+      attributes: ["id", "title"], 
       include: {
-        model: User, // Incluir los users asociados
-        as: "users", // El alias que hemos definido en las asociaciones
-        attributes: ["id", "firstName", "lastName"], // Seleccionamos los campos que queremos del user
+        model: User, 
+        as: "users", 
+        attributes: ["id", "firstName", "lastName"], 
         through: {
-          attributes: [], // Esto evitará que los campos de la tabla intermedia (como createdAt y updatedAt) sean devueltos
+          attributes: [], 
         },
       },
-      //raw: true // Esto elimina automáticamente los metadatos como createdAt y updatedAt
+  
     });
 
     if (bootcamps.length === 0) {

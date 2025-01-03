@@ -19,16 +19,16 @@ export const createUser = async (req, res, next) => {
 
 export const findUserById = async (req, res, next) => {
   try {
-    const { id } = req.params; // Obtén el ID del usuario desde los parámetros de la URL
+    const { id } = req.params;
 
     const user = await User.findByPk(id, {
-      attributes: ["id", "firstName", "lastName"], // Seleccionamos los campos de usuario que necesitamos
+      attributes: ["id", "firstName", "lastName"], 
       include: {
         model: Bootcamp, // Incluir los bootcamps asociados
-        as: "bootcamps", // El alias que hemos definido en las asociaciones
-        attributes: ["id", "title"], // Seleccionamos los campos que queremos del bootcamp
+        as: "bootcamps", 
+        attributes: ["id", "title"],
         through: {
-          attributes: [], // Excluir los campos de la tabla intermedia (createdAt, updatedAt)
+          attributes: [],
         },
       },
     });
