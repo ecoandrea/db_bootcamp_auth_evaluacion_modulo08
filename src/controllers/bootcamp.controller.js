@@ -70,6 +70,7 @@ export const findAll = async (req, res, next) => {
         through: {
           attributes: [], 
         },
+       
       },
   
     });

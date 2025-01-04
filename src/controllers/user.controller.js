@@ -24,7 +24,7 @@ export const findUserById = async (req, res, next) => {
     const user = await User.findByPk(id, {
       attributes: ["id", "firstName", "lastName"], 
       include: {
-        model: Bootcamp, // Incluir los bootcamps asociados
+        model: Bootcamp, 
         as: "bootcamps", 
         attributes: ["id", "title"],
         through: {
@@ -40,7 +40,7 @@ export const findUserById = async (req, res, next) => {
     res.status(200).json({
       message: "Usuario y bootcamps obtenidos con éxito",
       status: 200,
-      data: user, // Esto contiene el usuario con sus bootcamps
+      data: user,
     });
   } catch (error) {
     next(error)
@@ -49,15 +49,15 @@ export const findUserById = async (req, res, next) => {
 
 export const findAll = async (req, res, next) => {
   try {
-    // Obtener todos los usuarios con sus bootcamps asociados
+   
     const users = await User.findAll({
-      attributes: ["id", "firstName", "lastName", "email"], // Seleccionamos los campos de usuario que necesitamos
+      attributes: ["id", "firstName", "lastName", "email"], 
       include: {
-        model: Bootcamp, // Incluir los bootcamps asociados
-        as: "bootcamps", // El alias que hemos definido en las asociaciones
-        attributes: ["id", "title"], // Seleccionamos los campos que queremos del bootcamp
+        model: Bootcamp, 
+        as: "bootcamps",
+        attributes: ["id", "title"],
         through: {
-          attributes: [], // Excluir los campos de la tabla intermedia (createdAt, updatedAt)
+          attributes: [], 
         },
       },
     });
@@ -70,7 +70,7 @@ export const findAll = async (req, res, next) => {
     res.status(200).json({
       message: "Usuarios obtenidos con éxito",
       status: 200,
-      data: users, // Esto contiene una lista de usuarios con sus bootcamps
+      data: users, 
     });
   } catch (error) {
   next(error)
