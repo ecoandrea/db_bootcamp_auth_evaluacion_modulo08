@@ -1,9 +1,14 @@
-import { NotFoundError } from "../errors/typeErrors.js";
+import { NotFoundError, ValidationError } from "../errors/typeErrors.js";
 import { Bootcamp } from "../models/Bootcamp.model.js";
 import { User } from "../models/User.model.js";
+import {
+  isEmptyResponseData,
+  validateExistData,
+} from "../utils/validations/validate.js";
 
 export const createBootcamp = async (req, res, next) => {
   try {
+    await validateExistData(Bootcamp, req.body, ["title"]);
     const bootcamp = await Bootcamp.create(req.body);
 
     res.status(201).json({
@@ -18,16 +23,29 @@ export const createBootcamp = async (req, res, next) => {
 
 export const addUser = async (req, res, next) => {
   try {
-    const { bootcampId, userId } = req.body; 
+    const { bootcampId, userId } = req.body;
+
+    if (!bootcampId || !userId) {
+      throw new ValidationError(
+        "Faltan parámetros necesarios: bootcampId y userId"
+      );
+    }
+
     const bootcamp = await Bootcamp.findByPk(bootcampId, {
       attributes: ["id", "title"],
-    }); 
+    });
     const user = await User.findByPk(userId, {
       attributes: ["id", "firstName", "lastName"],
-    }); 
+    });
 
     if (!bootcamp || !user) {
       throw new NotFoundError("Bootcamp o Usuario no encontrado");
+    }
+
+    //Verificar si el usuario ya está asociado al bootcamp
+    const isAlreadyAssociated = await bootcamp.hasUser(user);
+    if (isAlreadyAssociated) {
+      throw new ValidationError("El usuario ya está asociado al bootcamp");
     }
 
     // Asociar el usuario al bootcamp
@@ -46,7 +64,15 @@ export const addUser = async (req, res, next) => {
 export const findById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const bootcamp = await Bootcamp.findByPk(id);
+    const bootcamp = await Bootcamp.findByPk(id, {
+      attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
+    });
+    
+    isEmptyResponseData(bootcamp);
+
+    if (!bootcamp) {
+      throw new NotFoundError("Bootcamp no encontrado");
+    }
 
     res.status(200).json({
       message: "Bootcamp encontrado con éxito",
@@ -62,22 +88,18 @@ export const findById = async (req, res, next) => {
 export const findAll = async (req, res, next) => {
   try {
     const bootcamps = await Bootcamp.findAll({
-      attributes: ["id", "title"], 
+      attributes: ["id", "title"],
       include: {
-        model: User, 
-        as: "users", 
-        attributes: ["id", "firstName", "lastName"], 
+        model: User,
+        as: "users",
+        attributes: ["id", "firstName", "lastName"],
         through: {
-          attributes: [], 
+          attributes: [],
         },
-       
       },
-  
     });
 
-    if (bootcamps.length === 0) {
-      throw new NotFoundError("No se ha encotrado los datos");
-    }
+    isEmptyResponseData(bootcamps);
 
     res.status(200).json({
       message: "Usuarios obtenidos con éxito",
@@ -113,7 +135,9 @@ export const updateBootcamp = async (req, res, next) => {
 export const deleteBootcampById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    await Bootcamp.destroy({ where: { id } });
+    const bootcamp = await Bootcamp.destroy({ where: { id } });
+
+    isEmptyResponseData(bootcamp);
 
     res.status(200).json({
       message: "Bootcamp eliminado con éxito",
