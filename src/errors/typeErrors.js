@@ -22,7 +22,11 @@ export class NotFoundError extends CustomError {
   }
 }
 
-
+export class MailError extends CustomError {
+  constructor(message, details) {
+    super(message || "Error al enviar el email", 500, details);
+  }
+}
 export class InternalServerError extends CustomError {
   constructor(message, details) {
     super(message || "Error interno del Servidor", 500, details);

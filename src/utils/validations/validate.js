@@ -54,3 +54,9 @@ export const validateExistData = async(Modelo, data, fields, excluidID = null ) 
         throw new ValidationError(`The fields ${fieldsString} are already in use by another record in '${Modelo.name}'.`)
     } 
 }
+
+export const emailContent=(to, subject, html) => {
+    if (!to || !subject || !html) throw new ValidationError('Todos los campos del email deben ser cubiertos')
+    return { to, subject, html}
+}
+ 
