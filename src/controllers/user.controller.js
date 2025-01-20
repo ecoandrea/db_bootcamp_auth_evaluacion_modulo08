@@ -4,21 +4,7 @@ import { Bootcamp } from "../models/Bootcamp.model.js";
 import { User } from "../models/User.model.js";
 import { isEmptyResponseData, validateExistData } from "../utils/validations/validate.js";
 
-export const createUser = async (req, res, next) => {
-  try {
 
-    await validateExistData(User, req.body, ['email']);
-    const user = await User.create(req.body);
-
-    res.status(201).json({
-      message: "Usuario creado con éxito",
-      status: 201,
-      data: user,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
 
 export const findUserById = async (req, res, next) => {
   try {
