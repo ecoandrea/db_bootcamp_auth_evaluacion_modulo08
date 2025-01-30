@@ -3,7 +3,7 @@ import { NotFoundError } from "../errors/typeErrors.js";
 import { Bootcamp } from "../models/Bootcamp.model.js";
 import { User } from "../models/User.model.js";
 import { isEmptyResponseData, validateExistData } from "../utils/validations/validate.js";
-
+import {hashPassword} from "../services/auth/hash.service.js"
 
 
 export const findUserById = async (req, res, next) => {
@@ -66,36 +66,39 @@ export const findAll = async (req, res, next) => {
   }
 };
 
+
+
 export const updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
 
-    await validateExistData(  
-      User,
-      updateData,
-      ["email"],
-      id
-    );
+    // Si la contraseña está presente en los datos de actualización, la hasheamos
+    if (updateData.password) {
+      updateData.password = await hashPassword(updateData.password);  // Hashea la contraseña
+    }
 
-    const [ updateRows, [ updateUser] ] = await User.update(updateData, {
+    await validateExistData(User, updateData, ["email"], id);
+
+  
+    const [updateRows, [updatedUser]] = await User.update(updateData, {
       where: { id },
       returning: true,
-      attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] } 
+      attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
     });
 
-    if(updateRows === 0) {
-      throw new NotFoundError(`No se encontro al usuario con el ID: ${id}`)
-  }
+    // Si no se encontró el usuario, lanzamos un error
+    if (updateRows === 0) {
+      throw new NotFoundError(`No se encontró al usuario con el ID: ${id}`);
+    }
 
     res.status(200).json({
       message: "Usuario actualizado con éxito",
       status: 200,
-      newData: updateUser
+      newData: updatedUser,
     });
   } catch (error) {
-   next(error)
-  
+    next(error);
   }
 };
 
