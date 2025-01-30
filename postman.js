@@ -1,7 +1,7 @@
 //mail
 [
 {
-    "to": [ "ecoandrea@gmail.com", "ivofuica@gmail.com", "aegarmus@gmail.com"], 
+    "to": [ "xxx@gmail.com", "xxy@gmail.com", "xxz@gmail.com"], 
     "subject":"prueba de mail"
 }, 
 {
