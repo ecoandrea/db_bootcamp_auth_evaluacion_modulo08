@@ -9,13 +9,13 @@ export const serverInit = async(app, port) => {
         app.listen (port,() =>{
             try { //aqui probamos la coneccion
                 verifyConnectionMail();
-                console.log('El transportador de correos esta listo para trabajar 🐱‍👤🐱‍🏍');
+                console.log('El transportador de correos esta listo para trabajar 😺');
             } catch (error) {
                 console.error('Problemas con el transportador de correos', error)
             }
-            console.log(`Servidor corriendo en el puerto ${port} 🚀`);
+            console.log(`Servidor corriendo en el puerto ${port} 👻`);
         })
     } catch (error) {
-        console.error('Error al inicializar el servidosr 👻')
+        console.error('Error al inicializar el servidosr ☠️')
     }
 }

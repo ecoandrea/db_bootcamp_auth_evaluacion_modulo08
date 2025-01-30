@@ -3,9 +3,6 @@ import { User } from '../models/User.model.js';
 import { registerService } from "../services/auth/register.service.js";
 
     
-
-  
-    
     export const register = async (req, res, next) => {
     
             try {
@@ -14,7 +11,7 @@ import { registerService } from "../services/auth/register.service.js";
                 res.status(201).json({
                     message: 'Usuario Registrado con éxito',
                     status: 201,
-                    data: user //Solo para fines pedagógicos, no debo mostrar todos los datos del usuario en una respuesta
+                    data: user 
                 });
         
             } catch (error) {

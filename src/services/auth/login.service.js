@@ -10,12 +10,12 @@ import { AuthError } from '../../errors/typeErrors.js';
 
 const { secretKey } = config;
 
-export const loginService = async({ email, password }) => { //se destructura los parametros para que sea uno solo 
+export const loginService = async({ email, password }) => { 
     try {
-        const user = await User.findOne( {where: {email}}); //busca por email
-        isNotFound(user); //que no este vacio el dato, si llega null, undefined, o un arreglo vacio o un objeto sin propiedades
+        const user = await User.findOne( {where: {email}}); 
+        isNotFound(user); 
 
-        const passwordMatch = await comparePassword (password, user.password); //pass texto plano desde el body , la hasheada dentro de user
+        const passwordMatch = await comparePassword (password, user.password); 
 
         isNotMatchedPassword(passwordMatch);
         
@@ -23,14 +23,14 @@ export const loginService = async({ email, password }) => { //se destructura los
 
         const privateUser = normalizeUserPrivateData(user);// para privatizar datos
         const token = jwt.sign(
-            { uid: user.id, email: user.email }, // email no es obligatorio, se mandan por cuerpo de jwt payload
+            { uid: user.id, email: user.email }, 
             secretKey,
-            { expiresIn: '1h' } //una vez expirado no es valido el token
+            { expiresIn: '1h' }
         );
 
         return {
             token,
-            user: privateUser //aqui van datos privados, solo info general
+            user: privateUser 
         };
     } catch (error) {
         throw new AuthError('Login no autorizado', 500, error); 
