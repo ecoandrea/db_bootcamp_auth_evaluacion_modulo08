@@ -5,13 +5,14 @@ import { hashPassword } from './hash.service.js';
 
 export const registerService = async(data, Model) => {
     try {
-        const [userGeneralData, email, password] = destructuringUserData(data); 
+        const [userGeneralData, email, password] = destructuringUserData(data); //en esta sola linea se saca la info que se quiere ordenada, la general , el email y el password
+
         
         await ensureEmailNotTaken(Model, email);
-        validatePassword(password, userGeneralData.fecha_nacimiento);
+        validatePassword(password);
 
         const hashedPassword = await hashPassword(password);
-        const userData = normalizeUserData(email, hashedPassword,userGeneralData);
+        const userData = normalizeUserData(email, hashedPassword, userGeneralData);
 
 
 
